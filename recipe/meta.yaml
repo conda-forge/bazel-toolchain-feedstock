@@ -7,17 +7,20 @@ package:
   version: {{ version }}
 
 build:
-  number: 0
+  number: 1
   skip: true  # [win]
 
 requirements:
-  run:
+  run_constrained:
+    # This can be used without bazel from conda-forge,
+    # e.g. when bootstrapping bazel itself.
     - bazel >=4
 
 test:
   requires:
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
+    - bazel
 
 about:
   home: https://github.com/conda-forge/bazel-toolchain-feedstock
