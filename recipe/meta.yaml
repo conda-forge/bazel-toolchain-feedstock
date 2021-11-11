@@ -1,5 +1,5 @@
 {% set name = "bazel-toolchain" %}
-{% set version = "0.0.1" %}
+{% set version = "0.1.0" %}
 
 
 package:
@@ -7,7 +7,7 @@ package:
   version: {{ version }}
 
 build:
-  number: 1
+  number: 0
   skip: true  # [win]
 
 requirements:
@@ -25,7 +25,7 @@ test:
 about:
   home: https://github.com/conda-forge/bazel-toolchain-feedstock
   summary: Helper script to generate a crosscompile toolchain for Bazel with the currently activated compiler settings.
-  description: | 
+  description: |
     This package generates a crosstool toolchain for Bazel that uses the currently
     activated compilers / linker as defined by the environment variables. It does
     take various conda(-forge) specifics into account for this. In addition to generating
@@ -44,3 +44,4 @@ about:
 extra:
   recipe-maintainers:
     - xhochy
+    - wolfv
