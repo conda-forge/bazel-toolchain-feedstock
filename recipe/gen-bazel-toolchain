@@ -63,7 +63,7 @@ pushd bazel_toolchain
     export BAZEL_TOOLCHAIN_LIBCXX="stdc++"
     export BAZEL_TOOLCHAIN_GCC="${GCC}"
     # for NVCC we need to use a crosstool wrapper
-    if [[ ${cuda_compiler_version} != "None" ]]; then
+    if [[ "${cuda_compiler_version:-None}" != "None" ]]; then
       export BAZEL_TOOLCHAIN_GCC=crosstool_wrapper_driver_is_not_gcc
     fi
   fi
