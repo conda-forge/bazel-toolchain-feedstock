@@ -5,3 +5,6 @@ build_platform:
 conda_forge_output_validation: true
 # Bazel cannot self-extract itself in emulation mode
 test: native
+github:
+  branch_name: main
+  tooling_branch_name: main
