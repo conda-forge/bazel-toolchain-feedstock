@@ -66,6 +66,7 @@ pushd bazel_toolchain
     export BAZEL_TOOLCHAIN_COMPILER_VERSION=$(${CC} -v 2>&1|tail -n1|cut -d' ' -f3)
     export BAZEL_TOOLCHAIN_AR=$(basename ${AR})
     touch cc_wrapper.sh
+    touch cc_wrapper_build.sh
     export BAZEL_TOOLCHAIN_LIBCXX="stdc++"
     export BAZEL_TOOLCHAIN_GCC="${GCC}"
     # for NVCC we need to use a crosstool wrapper
