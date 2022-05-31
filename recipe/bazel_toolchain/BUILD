@@ -7,7 +7,10 @@ filegroup(
 
 filegroup(
     name = "cc_wrapper",
-    srcs = ["cc_wrapper.sh"],
+    srcs = [
+        "cc_wrapper.sh",
+        "cc_wrapper_build.sh",
+    ],
 )
 
 filegroup(
