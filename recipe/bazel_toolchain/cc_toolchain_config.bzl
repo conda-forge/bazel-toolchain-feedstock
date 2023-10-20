@@ -314,6 +314,8 @@ def _impl(ctx):
         if (len("${CUDA_HOME}")):
             cxx_builtin_include_directories.append("${CUDA_HOME}/include")
             cxx_builtin_include_directories.append("${CUDA_HOME}/targets/x86_64-linux/include/")
+	    # linux-aarch64
+            cxx_builtin_include_directories.append("${CUDA_HOME}/targets/sbsa/include/")
 
     return cc_common.create_cc_toolchain_config_info(
         ctx = ctx,
