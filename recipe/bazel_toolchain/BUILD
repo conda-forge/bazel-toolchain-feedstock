@@ -69,3 +69,17 @@ cc_toolchain(
     strip_files = ":empty",
     supports_param_files = 0,
 )
+
+toolchain(
+    name = "cc_toolchain_for_conda_forge",
+    toolchain = ":cc-compiler-target",
+    toolchain_type = "@bazel_tools//tools/cpp:toolchain_type",
+    exec_compatible_with = [
+        "@platforms//cpu:arm64",
+        "@platforms//os:macos",
+    ],
+    target_compatible_with = [
+        "@platforms//cpu:arm64",
+        "@platforms//os:macos",
+    ],
+)

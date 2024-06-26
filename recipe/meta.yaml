@@ -1,5 +1,5 @@
 {% set name = "bazel-toolchain" %}
-{% set version = "0.1.10" %}
+{% set version = "0.2.0" %}
 
 
 package:
@@ -14,7 +14,7 @@ requirements:
   run_constrained:
     # This can be used without bazel from conda-forge,
     # e.g. when bootstrapping bazel itself.
-    - bazel >=4
+    - bazel >=6
 
 test:
   requires:
