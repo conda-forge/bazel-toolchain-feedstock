@@ -78,38 +78,59 @@ pushd bazel_toolchain
     fi
   fi
 
+  # For the platform values see https://github.com/bazelbuild/platforms/tree/main
   export TARGET_SYSTEM="${HOST}"
   if [[ "${target_platform}" == "osx-64" ]]; then
     export TARGET_LIBC="macosx"
     export TARGET_CPU="darwin_x86_64"
     export TARGET_SYSTEM="x86_64-apple-macosx"
+    export TARGET_PLATFORM_OS="macos"
+    export TARGET_PLATFORM_CPU="x86_64"
   elif [[ "${target_platform}" == "osx-arm64" ]]; then
     export TARGET_LIBC="macosx"
     export TARGET_CPU="darwin_arm64"
     export TARGET_SYSTEM="arm64-apple-macosx"
+    export TARGET_PLATFORM_OS="macos"
+    export TARGET_PLATFORM_CPU="arm64"
   elif [[ "${target_platform}" == "linux-64" ]]; then
     export TARGET_LIBC="unknown"
     export TARGET_CPU="k8"
+    export TARGET_PLATFORM_OS="linux"
+    export TARGET_PLATFORM_CPU="x86_64"
   elif [[ "${target_platform}" == "linux-aarch64" ]]; then
     export TARGET_LIBC="unknown"
     export TARGET_CPU="aarch64"
+    export TARGET_PLATFORM_OS="linux"
+    export TARGET_PLATFORM_CPU="aarch64"
   elif [[ "${target_platform}" == "linux-ppc64le" ]]; then
     export TARGET_LIBC="unknown"
     export TARGET_CPU="ppc"
+    export TARGET_PLATFORM_OS="linux"
+    export TARGET_PLATFORM_CPU="ppc64le"
   fi
   export BUILD_SYSTEM=${BUILD}
   if [[ "${build_platform}" == "osx-64" ]]; then
     export BUILD_CPU="darwin"
     export BUILD_SYSTEM="x86_64-apple-macosx"
+    export BUILD_PLATFORM_OS="macos"
+    export BUILD_PLATFORM_CPU="x86_64"
   elif [[ "${build_platform}" == "osx-arm64" ]]; then
     export BUILD_CPU="darwin"
     export BUILD_SYSTEM="arm64-apple-macosx"
+    export BUILD_PLATFORM_OS="macos"
+    export BUILD_PLATFORM_CPU="arm64"
   elif [[ "${build_platform}" == "linux-64" ]]; then
     export BUILD_CPU="k8"
+    export BUILD_PLATFORM_OS="linux"
+    export BUILD_PLATFORM_CPU="x86_64"
   elif [[ "${build_platform}" == "linux-aarch64" ]]; then
     export BUILD_CPU="aarch64"
+    export BUILD_PLATFORM_OS="linux"
+    export BUILD_PLATFORM_CPU="aarch64"
   elif [[ "${build_platform}" == "linux-ppc64le" ]]; then
     export BUILD_CPU="ppc"
+    export BUILD_PLATFORM_OS="linux"
+    export BUILD_PLATFORM_CPU="ppc64le"
   fi
   # The current Bazel release cannot distinguish between osx-arm64 and osx-64.
   # This will change with later releases and then we should get rid of this section again.
@@ -122,6 +143,10 @@ pushd bazel_toolchain
   
   sed -ie "s:TARGET_CPU:${TARGET_CPU}:" BUILD
   sed -ie "s:BUILD_CPU:${BUILD_CPU}:" BUILD
+  sed -ie "s:BUILD_PLATFORM_OS:${BUILD_PLATFORM_OS}:" BUILD
+  sed -ie "s:BUILD_PLATFORM_CPU:${BUILD_PLATFORM_CPU}:" BUILD
+  sed -ie "s:TARGET_PLATFORM_OS:${TARGET_PLATFORM_OS}:" BUILD
+  sed -ie "s:TARGET_PLATFORM_CPU:${TARGET_PLATFORM_CPU}:" BUILD
 
   HOST_PREFIX=${PREFIX}
 
