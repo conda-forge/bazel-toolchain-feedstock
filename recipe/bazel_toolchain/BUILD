@@ -99,6 +99,14 @@ toolchain(
 )
 
 platform(
+    name = "build_platform",
+    constraint_values = [
+        "@platforms//os:BUILD_PLATFORM_OS",
+        "@platforms//cpu:BUILD_PLATFORM_CPU",
+    ],
+)
+
+platform(
     name = "target_platform",
     constraint_values = [
         "@platforms//os:TARGET_PLATFORM_OS",
