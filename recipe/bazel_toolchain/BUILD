@@ -15,7 +15,7 @@ filegroup(
 
 filegroup(
     name = "compiler_deps",
-    srcs = glob(["extra_tools/**"]) + [":cc_wrapper"],
+    srcs = [":cc_wrapper"],
 )
 
 load(
@@ -71,15 +71,37 @@ cc_toolchain(
 )
 
 toolchain(
-    name = "cc_toolchain_for_conda_forge",
+    name = "cc_cf_toolchain",
     toolchain = ":cc-compiler-target",
     toolchain_type = "@bazel_tools//tools/cpp:toolchain_type",
     exec_compatible_with = [
-        "@platforms//cpu:arm64",
-        "@platforms//os:macos",
+        "@platforms//cpu:BUILD_PLATFORM_CPU",
+        "@platforms//os:BUILD_PLATFORM_OS",
     ],
     target_compatible_with = [
-        "@platforms//cpu:arm64",
-        "@platforms//os:macos",
+        "@platforms//cpu:TARGET_PLATFORM_CPU",
+        "@platforms//os:TARGET_PLATFORM_OS",
+    ],
+)
+
+toolchain(
+    name = "cc_cf_host_toolchain",
+    toolchain = ":cc-compiler-build",
+    toolchain_type = "@bazel_tools//tools/cpp:toolchain_type",
+    exec_compatible_with = [
+        "@platforms//cpu:BUILD_PLATFORM_CPU",
+        "@platforms//os:BUILD_PLATFORM_OS",
+    ],
+    target_compatible_with = [
+        "@platforms//cpu:BUILD_PLATFORM_CPU",
+        "@platforms//os:BUILD_PLATFORM_OS",
+    ],
+)
+
+platform(
+    name = "target_platform",
+    constraint_values = [
+        "@platforms//os:TARGET_PLATFORM_OS",
+        "@platforms//cpu:TARGET_PLATFORM_CPU",
     ],
 )
