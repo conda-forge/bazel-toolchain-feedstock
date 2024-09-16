@@ -41,12 +41,15 @@ export BAZEL_USE_CPP_ONLY_TOOLCHAIN=1
 # Fallback to $CONDA_PREFIX if run outside of conda-build
 export PREFIX=${PREFIX:-$CONDA_PREFIX}
 
+
+
 # set up bazel config file for conda provided clang toolchain
 cp -r ${CONDA_PREFIX}/share/bazel_toolchain .
 pushd bazel_toolchain
   if [[ "${target_platform}" == osx-* ]]; then
     export BAZEL_TOOLCHAIN_COMPILER_VERSION=$($CC -v 2>&1 | head -n1 | cut -d' ' -f3)
     export SHORT_BAZEL_TOOLCHAIN_COMPILER_VERSION=$(echo ${BAZEL_TOOLCHAIN_COMPILER_VERSION} | cut -d. -f1)
+    export CONDA_BUILD_SYSROOT=${CONDA_BUILD_SYSROOT:-${SDKROOT}}
     sed -e "s:\${CLANG}:${CLANG}:" \
         -e "s:\${INSTALL_NAME_TOOL}:${INSTALL_NAME_TOOL}:" \
         -e "s:\${CONDA_BUILD_SYSROOT}:${CONDA_BUILD_SYSROOT}:" \
