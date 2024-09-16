@@ -6,8 +6,6 @@ cp -r ${RECIPE_DIR}/tutorial .
 cd tutorial
 
 source gen-bazel-toolchain
-echo $SDKROOT
-echo $CONDA_BUILD_SYSROOT
 bazel build --logging=6 --subcommands --verbose_failures \
     --platforms=//bazel_toolchain:target_platform \
     --host_platform=//bazel_toolchain:build_platform \
