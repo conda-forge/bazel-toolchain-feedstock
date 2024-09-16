@@ -165,8 +165,10 @@ pushd bazel_toolchain
       target_platform=${build_platform}
       PREFIX=${CONDA_PREFIX}
       LD=${LD//${HOST}/${BUILD}}
+      CFLAGS="$(echo ${CFLAGS} | sed 's/ -march=[^ ]*//g' | sed 's/ -mcpu=[^ ]*//g' |sed 's/ -mtune=[^ ]*//g')"
       CFLAGS=${CFLAGS//${HOST_PREFIX}/${CONDA_PREFIX}}
       CPPFLAGS=${CPPFLAGS//${HOST_PREFIX}/${CONDA_PREFIX}}
+      CXXFLAGS="$(echo ${CXXFLAGS} | sed 's/ -march=[^ ]*//g' | sed 's/ -mcpu=[^ ]*//g' |sed 's/ -mtune=[^ ]*//g')"
       CXXFLAGS=${CXXFLAGS//${HOST_PREFIX}/${CONDA_PREFIX}}
       CONDA_BUILD_SYSROOT=${CONDA_BUILD_SYSROOT//${HOST}/${BUILD}}
       LDFLAGS=${LDFLAGS//${HOST_PREFIX}/${CONDA_PREFIX}}

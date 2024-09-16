@@ -1,5 +1,5 @@
 {% set name = "bazel-toolchain" %}
-{% set version = "0.2.0" %}
+{% set version = "0.2.1" %}
 
 
 package:
@@ -15,6 +15,7 @@ requirements:
     # This can be used without bazel from conda-forge,
     # e.g. when bootstrapping bazel itself.
     - bazel >=6
+    - sed
 
 test:
   requires:
