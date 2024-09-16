@@ -2,13 +2,10 @@ c_compiler:
 - gcc
 c_compiler_version:
 - '13'
-<<<<<<< HEAD
-=======
 c_stdlib:
 - sysroot
 c_stdlib_version:
 - '2.17'
->>>>>>> 226c15a (Use newer toolchain attributes)
 cdt_name:
 - cos7
 channel_sources:
