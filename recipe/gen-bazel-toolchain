@@ -113,12 +113,12 @@ pushd bazel_toolchain
   fi
   export BUILD_SYSTEM=${BUILD}
   if [[ "${build_platform}" == "osx-64" ]]; then
-    export BUILD_CPU="darwin"
+    export BUILD_CPU="darwin_x86_64"
     export BUILD_SYSTEM="x86_64-apple-macosx"
     export BUILD_PLATFORM_OS="macos"
     export BUILD_PLATFORM_CPU="x86_64"
   elif [[ "${build_platform}" == "osx-arm64" ]]; then
-    export BUILD_CPU="darwin"
+    export BUILD_CPU="darwin_arm64"
     export BUILD_SYSTEM="arm64-apple-macosx"
     export BUILD_PLATFORM_OS="macos"
     export BUILD_PLATFORM_CPU="arm64"
@@ -135,15 +135,7 @@ pushd bazel_toolchain
     export BUILD_PLATFORM_OS="linux"
     export BUILD_PLATFORM_CPU="ppc64le"
   fi
-  # The current Bazel release cannot distinguish between osx-arm64 and osx-64.
-  # This will change with later releases and then we should get rid of this section again.
-  #if [[ "${target_platform}" == osx-* ]]; then
-  #  if [[ "${build_platform}" == "${target_platform}" ]]; then
-  #    export TARGET_CPU="darwin"
-  #    export BUILD_CPU="darwin"
-  #  fi
-  #fi
-  
+
   sed -ie "s:TARGET_CPU:${TARGET_CPU}:" BUILD
   sed -ie "s:BUILD_CPU:${BUILD_CPU}:" BUILD
   sed -ie "s:BUILD_PLATFORM_OS:${BUILD_PLATFORM_OS}:" BUILD
