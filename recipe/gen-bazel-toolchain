@@ -109,7 +109,7 @@ pushd bazel_toolchain
     export TARGET_LIBC="unknown"
     export TARGET_CPU="ppc"
     export TARGET_PLATFORM_OS="linux"
-    export TARGET_PLATFORM_CPU="ppc64le"
+    export TARGET_PLATFORM_CPU="${CONDA_BAZEL_TOOLCHAIN_PPC64LE_CPU:-ppc64le}"
   fi
   export BUILD_SYSTEM=${BUILD}
   if [[ "${build_platform}" == "osx-64" ]]; then
@@ -133,7 +133,7 @@ pushd bazel_toolchain
   elif [[ "${build_platform}" == "linux-ppc64le" ]]; then
     export BUILD_CPU="ppc"
     export BUILD_PLATFORM_OS="linux"
-    export BUILD_PLATFORM_CPU="ppc64le"
+    export TARGET_PLATFORM_CPU="${CONDA_BAZEL_TOOLCHAIN_PPC64LE_CPU:-ppc64le}"
   fi
 
   sed -ie "s:TARGET_CPU:${TARGET_CPU}:" BUILD
