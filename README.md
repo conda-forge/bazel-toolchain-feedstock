@@ -18,9 +18,8 @@ to ensure that cross-compiling also works.
 
 In build.sh
 
-  source gen-bazel-toolchain
-  bazel build --crosstool_top=//bazel_toolchain:toolchain --cpu ${TARGET_CPU} …
-
+source gen-bazel-toolchain
+bazel build --crosstool_top=//bazel_toolchain:toolchain --cpu ${TARGET_CPU} …
 
 Current build status
 ====================
