@@ -2,8 +2,7 @@
 
 set -exuo pipefail
 
-cp -r ${RECIPE_DIR}/tutorial .
-cd tutorial
+pushd tutorial
 
 source gen-bazel-toolchain
 bazel build --logging=6 --subcommands --verbose_failures \
