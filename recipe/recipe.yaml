@@ -1,31 +1,35 @@
-{% set name = "bazel-toolchain" %}
-{% set version = "0.3.1" %}
+schema_version: 1
 
+context:
+  name: bazel-toolchain
+  version: 0.3.1
 
 package:
-  name: {{ name|lower }}
-  version: {{ version }}
+  name: ${{ name|lower }}
+  version: ${{ version }}
 
 build:
-  number: 0
-  skip: true  # [win]
+  number: 1
+  skip: win
 
 requirements:
-  run_constrained:
-    # This can be used without bazel from conda-forge,
-    # e.g. when bootstrapping bazel itself.
+  run_constraints:
     - bazel >=6
     - sed
 
-test:
-  requires:
-    - {{ stdlib('c') }}
-    - {{ compiler('c') }}
-    - {{ compiler('cxx') }}
-    - bazel
+tests:
+  - requirements:
+      run:
+        - ${{ stdlib('c') }}
+        - ${{ compiler('c') }}
+        - ${{ compiler('cxx') }}
+        - bazel
+    script: run_test.sh
+    files:
+      recipe:
+        - tutorial/
 
 about:
-  home: https://github.com/conda-forge/bazel-toolchain-feedstock
   summary: Helper script to generate a crosscompile toolchain for Bazel with the currently activated compiler settings.
   description: |
     This package generates a crosstool toolchain for Bazel that uses the currently
@@ -37,11 +41,12 @@ about:
 
     In build.sh
 
-      source gen-bazel-toolchain
-      bazel build --crosstool_top=//bazel_toolchain:toolchain --cpu ${TARGET_CPU} …
+    source gen-bazel-toolchain
+    bazel build --crosstool_top=//bazel_toolchain:toolchain --cpu ${TARGET_CPU} …
 
   license: BSD-3-Clause AND Apache-2.0
   license_file: LICENSE.txt
+  homepage: https://github.com/conda-forge/bazel-toolchain-feedstock
 
 extra:
   recipe-maintainers:
