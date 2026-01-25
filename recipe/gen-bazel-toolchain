@@ -55,6 +55,9 @@ pushd bazel_toolchain
     export SHORT_BAZEL_TOOLCHAIN_COMPILER_VERSION=${BAZEL_TOOLCHAIN_COMPILER_VERSION}
   fi
   if [[ "${target_platform}" == osx-* ]]; then
+    # We need the full path to the compiler
+    CLANG=$(which clang)
+
     export CONDA_BUILD_SYSROOT=${CONDA_BUILD_SYSROOT:-${SDKROOT}}
     sed -e "s:\${CLANG}:${CLANG}:" \
         -e "s:\${INSTALL_NAME_TOOL}:${INSTALL_NAME_TOOL}:" \
@@ -79,6 +82,8 @@ pushd bazel_toolchain
     export GCC_HEADER_VERSION="$(ls ${BUILD_PREFIX}/lib/gcc/${CONDA_TOOLCHAIN_HOST})"
     export BUILD_GCC_HEADER_VERSION="$(ls ${BUILD_PREFIX}/lib/gcc/${CONDA_TOOLCHAIN_BUILD})"
     if [[ "${c_compiler}" == "clang" ]]; then
+      # We need the full path to the compiler
+      CLANG=$(which clang)
       export CONDA_BUILD_SYSROOT=${CONDA_BUILD_SYSROOT:-${SDKROOT}}
       sed -e "s:\${CLANG}:${CLANG}:" \
           -e "s:\${INSTALL_NAME_TOOL}::" \
