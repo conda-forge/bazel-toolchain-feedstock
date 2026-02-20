@@ -5,6 +5,27 @@ set -euxo pipefail
 CC=$(command -v "${CC}")
 CC_FOR_BUILD=$(command -v "${CC_FOR_BUILD}")
 
+resolve_gcc_header_version() {
+  local toolchain="$1"
+  shift
+
+  local prefix gcc_dir version
+  for prefix in "$@"; do
+    [[ -n "${prefix}" ]] || continue
+    gcc_dir="${prefix}/lib/gcc/${toolchain}"
+    [[ -d "${gcc_dir}" ]] || continue
+
+    # Prefer the newest GCC version that has a usable C++ headers directory.
+    while IFS= read -r version; do
+      [[ -d "${gcc_dir}/${version}/include/c++" ]] || continue
+      echo "${version}"
+      return 0
+    done < <(ls -1 "${gcc_dir}" | sort -Vr)
+  done
+
+  return 1
+}
+
 function apply_cc_template() {
   # Strip trailing/duplicate whitespace
   CFLAGS=$(echo $CFLAGS | xargs echo -n)
@@ -79,8 +100,26 @@ pushd bazel_toolchain
   else
     export BAZEL_TOOLCHAIN_LIBCXX="stdc++"
     export BAZEL_TOOLCHAIN_AR=$(basename ${AR})
-    export GCC_HEADER_VERSION="$(ls -1 ${BUILD_PREFIX}/lib/gcc/${CONDA_TOOLCHAIN_HOST} | sort -V | head -n1))"
-    export BUILD_GCC_HEADER_VERSION="$(ls -1 ${BUILD_PREFIX}/lib/gcc/${CONDA_TOOLCHAIN_BUILD} | sort -V | head -n1))"
+    TOOLCHAIN_HOST="${CONDA_TOOLCHAIN_HOST:-${HOST}}"
+    TOOLCHAIN_BUILD="${CONDA_TOOLCHAIN_BUILD:-${BUILD:-${HOST}}}"
+    export GCC_HEADER_VERSION="$(
+      resolve_gcc_header_version \
+        "${TOOLCHAIN_HOST}" \
+        "${BUILD_PREFIX:-}" \
+        "${CONDA_PREFIX}" \
+        "${PREFIX}" \
+        || true
+    )"
+    export BUILD_GCC_HEADER_VERSION="$(
+      resolve_gcc_header_version \
+        "${TOOLCHAIN_BUILD}" \
+        "${BUILD_PREFIX:-}" \
+        "${CONDA_PREFIX}" \
+        "${PREFIX}" \
+        || true
+    )"
+    export GCC_HEADER_VERSION="${GCC_HEADER_VERSION:-${BAZEL_TOOLCHAIN_COMPILER_VERSION}}"
+    export BUILD_GCC_HEADER_VERSION="${BUILD_GCC_HEADER_VERSION:-${GCC_HEADER_VERSION}}"
     if [[ "${c_compiler}" == "clang" ]]; then
       export CONDA_BUILD_SYSROOT=${CONDA_BUILD_SYSROOT:-${SDKROOT}}
       sed -e "s:\${CLANG}:${CC}:" \
