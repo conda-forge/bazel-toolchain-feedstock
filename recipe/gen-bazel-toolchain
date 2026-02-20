@@ -79,8 +79,8 @@ pushd bazel_toolchain
   else
     export BAZEL_TOOLCHAIN_LIBCXX="stdc++"
     export BAZEL_TOOLCHAIN_AR=$(basename ${AR})
-    export GCC_HEADER_VERSION="$(ls -1 ${BUILD_PREFIX}/lib/gcc/${CONDA_TOOLCHAIN_HOST})"
-    export BUILD_GCC_HEADER_VERSION="$(ls -1 ${BUILD_PREFIX}/lib/gcc/${CONDA_TOOLCHAIN_BUILD})"
+    export GCC_HEADER_VERSION="$(ls -1 ${BUILD_PREFIX}/lib/gcc/${CONDA_TOOLCHAIN_HOST} | sort -V | head -n1))"
+    export BUILD_GCC_HEADER_VERSION="$(ls -1 ${BUILD_PREFIX}/lib/gcc/${CONDA_TOOLCHAIN_BUILD} | sort -V | head -n1))"
     if [[ "${c_compiler}" == "clang" ]]; then
       export CONDA_BUILD_SYSROOT=${CONDA_BUILD_SYSROOT:-${SDKROOT}}
       sed -e "s:\${CLANG}:${CC}:" \
