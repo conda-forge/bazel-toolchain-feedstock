@@ -160,6 +160,12 @@ def _impl(ctx):
         ]
     else:
         toolchain_include_directories_flags = [
+	    "-isystem",
+	    "${CONDA_PREFIX}/lib/gcc/${HOST}/${GCC_HEADER_VERSION}/include/c++",
+	    "-isystem",
+	    "${CONDA_PREFIX}/lib/gcc/${HOST}/${GCC_HEADER_VERSION}/include/c++/${HOST}",
+	    "-isystem",
+	    "${CONDA_PREFIX}/lib/gcc/${HOST}/${GCC_HEADER_VERSION}/include/c++/backward",
             "-isystem",
             "${PREFIX}/include",
         ]
@@ -309,6 +315,9 @@ def _impl(ctx):
         cxx_builtin_include_directories = [
             "${CONDA_BUILD_SYSROOT}/usr/include",
             "${CONDA_PREFIX}/lib/gcc/${HOST}/${GCC_HEADER_VERSION}",
+	    "${CONDA_PREFIX}/lib/gcc/${HOST}/${GCC_HEADER_VERSION}/include/c++",
+	    "${CONDA_PREFIX}/lib/gcc/${HOST}/${GCC_HEADER_VERSION}/include/c++/${HOST}",
+	    "${CONDA_PREFIX}/lib/gcc/${HOST}/${GCC_HEADER_VERSION}/include/c++/backward",
 	    "${CONDA_PREFIX}/${HOST}/include/c++/${GCC_HEADER_VERSION}",
             "${PREFIX}/include",
 	    # Include for clang-headers, should be ignored in gcc builds
