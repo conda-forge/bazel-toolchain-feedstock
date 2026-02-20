@@ -10,11 +10,12 @@ build:
   skip: true  # [win]
 
 requirements:
+  run:
+    - sed
   run_constrained:
     # This can be used without bazel from conda-forge,
     # e.g. when bootstrapping bazel itself.
     - bazel >=7
-    - sed
 
 test:
   requires:
