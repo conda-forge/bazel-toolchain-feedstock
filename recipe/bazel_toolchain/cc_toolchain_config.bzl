@@ -160,12 +160,6 @@ def _impl(ctx):
         ]
     else:
         toolchain_include_directories_flags = [
-	    "-isystem",
-	    "${CONDA_PREFIX}/lib/gcc/${HOST}/${GCC_HEADER_VERSION}/include/c++",
-	    "-isystem",
-	    "${CONDA_PREFIX}/lib/gcc/${HOST}/${GCC_HEADER_VERSION}/include/c++/${HOST}",
-	    "-isystem",
-	    "${CONDA_PREFIX}/lib/gcc/${HOST}/${GCC_HEADER_VERSION}/include/c++/backward",
             "-isystem",
             "${PREFIX}/include",
         ]
