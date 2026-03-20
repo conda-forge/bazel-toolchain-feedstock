@@ -25,7 +25,7 @@ tests:
         - run_test.sh
         - tutorial
     requirements:
-      build:
+      run:
         - ${{ stdlib('c') }}
         - ${{ compiler('c') }}
         - ${{ compiler('cxx') }}
