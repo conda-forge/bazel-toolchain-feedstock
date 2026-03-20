@@ -5,6 +5,11 @@ set -euxo pipefail
 CC=$(command -v "${CC}")
 CC_FOR_BUILD=$(command -v "${CC_FOR_BUILD}")
 
+if [ ! -n "${target_platform-}" ]; then
+  build_platform=$(conda config --show subdir | awk '{print $2}')
+  target_platform=${build_platform}
+fi
+
 resolve_gcc_header_version() {
   local toolchain="$1"
   shift
@@ -48,7 +53,7 @@ function apply_cc_template() {
   sed -i "s:\${PREFIX}:${PREFIX}:" $1
   sed -i "s:\${CONDA_PREFIX}:${CONDA_PREFIX}:" $1
   sed -i "s:\${HOST_PREFIX}:${HOST_PREFIX}:" $1
-  sed -i "s:\${BUILD_PREFIX}:${BUILD_PREFIX}:" $1
+  sed -i "s:\${BUILD_PREFIX}:${BUILD_PREFIX:-$CONDA_PREFIX}:" $1
   sed -i "s:\${LD}:${LD}:" $1
   sed -i "s:\${CFLAGS}:${CFLAGS}:" $1
   sed -i "s:\${CPPFLAGS}:${CPPFLAGS}:" $1
@@ -71,7 +76,7 @@ export PREFIX=${PREFIX:-$CONDA_PREFIX}
 # set up bazel config file for conda provided clang toolchain
 cp -r ${CONDA_PREFIX}/share/bazel_toolchain .
 pushd bazel_toolchain
-  if [[ "${c_compiler}" == "clang" ]]; then
+  if [[ "${c_compiler:-${CC}}" == *"clang" ]]; then
     export BAZEL_TOOLCHAIN_COMPILER_VERSION=$($CC -v 2>&1 | head -n1 | cut -d' ' -f3)
     export SHORT_BAZEL_TOOLCHAIN_COMPILER_VERSION=$(echo ${BAZEL_TOOLCHAIN_COMPILER_VERSION} | cut -d. -f1)
   else
@@ -120,7 +125,7 @@ pushd bazel_toolchain
     )"
     export GCC_HEADER_VERSION="${GCC_HEADER_VERSION:-${BAZEL_TOOLCHAIN_COMPILER_VERSION}}"
     export BUILD_GCC_HEADER_VERSION="${BUILD_GCC_HEADER_VERSION:-${GCC_HEADER_VERSION}}"
-    if [[ "${c_compiler}" == "clang" ]]; then
+    if [[ "${c_compiler:-${CC}}" == *"clang" ]]; then
       export CONDA_BUILD_SYSROOT=${CONDA_BUILD_SYSROOT:-${SDKROOT}}
       sed -e "s:\${CLANG}:${CC}:" \
           -e "s:\${INSTALL_NAME_TOOL}::" \
