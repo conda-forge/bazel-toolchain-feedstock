@@ -100,11 +100,24 @@ toolchain(
     ],
 )
 
+constraint_setting(name = "conda_platform")
+
+constraint_value(
+    name = "conda_build_platform",
+    constraint_setting = ":conda_platform",
+)
+
+constraint_value(
+    name = "conda_target_platform",
+    constraint_setting = ":conda_platform",
+)
+
 platform(
     name = "build_platform",
     constraint_values = [
         "@platforms//os:BUILD_PLATFORM_OS",
         "@platforms//cpu:BUILD_PLATFORM_CPU",
+	":conda_build_platform",
     ],
 )
 
@@ -113,5 +126,6 @@ platform(
     constraint_values = [
         "@platforms//os:TARGET_PLATFORM_OS",
         "@platforms//cpu:TARGET_PLATFORM_CPU",
+	":conda_target_platform",
     ],
 )
