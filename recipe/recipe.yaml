@@ -2,7 +2,7 @@ schema_version: 1
 
 context:
   name: bazel-toolchain
-  version: "0.5.7"
+  version: "0.5.8"
 
 package:
   name: ${{ name|lower }}
