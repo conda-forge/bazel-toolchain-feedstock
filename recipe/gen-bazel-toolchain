@@ -6,8 +6,13 @@ CC=$(command -v "${CC}")
 CC_FOR_BUILD=$(command -v "${CC_FOR_BUILD}")
 
 if [ ! -n "${target_platform-}" ]; then
-  build_platform=$(conda config --show subdir | awk '{print $2}')
-  target_platform=${build_platform}
+  if [ -n "${host_platform-}" ]; then
+    # If host_platform is set, we assume that build_platform is set too.
+    target_platform=${host_platform}
+  else
+    build_platform=$(conda config --show subdir | awk '{print $2}')
+    target_platform=${build_platform}
+  fi
 fi
 
 resolve_gcc_header_version() {
