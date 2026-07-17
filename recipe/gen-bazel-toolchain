@@ -5,7 +5,7 @@ set -euxo pipefail
 CC=$(command -v "${CC}")
 CC_FOR_BUILD=$(command -v "${CC_FOR_BUILD}")
 
-if [ ! -n "${target_platform-}" ]; then
+if [ ! -n "${target_platform-}" ] || [ "${target_platform}" == "noarch" ]; then
   if [ -n "${host_platform-}" ]; then
     # If host_platform is set, we assume that build_platform is set too.
     target_platform=${host_platform}
