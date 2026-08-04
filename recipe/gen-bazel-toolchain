@@ -5,6 +5,24 @@ set -euxo pipefail
 CC=$(command -v "${CC}")
 CC_FOR_BUILD=$(command -v "${CC_FOR_BUILD}")
 
+# Compiler activation may export tool basenames only. These values are embedded
+# as toolchain tool paths under //bazel_toolchain; relative names become missing
+# sandbox files (e.g. bazel_toolchain/x86_64-conda-linux-gnu-gcc).
+# Resolve to absolute paths, matching the handling of CC above.
+# See: https://github.com/conda-forge/grpc_java_plugin-feedstock/pull/114
+if [[ -n "${GCC:-}" ]]; then
+  GCC=$(command -v "${GCC}")
+fi
+if [[ -n "${LD:-}" ]]; then
+  LD=$(command -v "${LD}")
+fi
+if [[ -n "${NM:-}" ]]; then
+  NM=$(command -v "${NM}")
+fi
+if [[ -n "${STRIP:-}" ]]; then
+  STRIP=$(command -v "${STRIP}")
+fi
+
 if [ ! -n "${target_platform-}" ] || [ "${target_platform}" == "noarch" ]; then
   if [ -n "${host_platform-}" ]; then
     # If host_platform is set, we assume that build_platform is set too.
