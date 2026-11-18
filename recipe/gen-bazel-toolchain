@@ -205,6 +205,11 @@ pushd bazel_toolchain
     export TARGET_CPU="ppc64le"
     export TARGET_PLATFORM_OS="linux"
     export TARGET_PLATFORM_CPU="${CONDA_BAZEL_TOOLCHAIN_PPC64LE_CPU:-ppc64le}"
+  elif [[ "${target_platform}" == "linux-riscv64" ]]; then
+    export TARGET_LIBC="unknown"
+    export TARGET_CPU="riscv64"
+    export TARGET_PLATFORM_OS="linux"
+    export TARGET_PLATFORM_CPU="riscv64"
   fi
   export BUILD_SYSTEM=${BUILD}
   if [[ "${build_platform}" == "osx-64" ]]; then
@@ -229,6 +234,10 @@ pushd bazel_toolchain
     export BUILD_CPU="ppc64le"
     export BUILD_PLATFORM_OS="linux"
     export TARGET_PLATFORM_CPU="${CONDA_BAZEL_TOOLCHAIN_PPC64LE_CPU:-ppc64le}"
+  elif [[ "${build_platform}" == "linux-riscv64" ]]; then
+    export BUILD_CPU="riscv64"
+    export BUILD_PLATFORM_OS="linux"
+    export BUILD_PLATFORM_CPU="riscv64"
   fi
 
   sed -i "s:TARGET_CPU:${TARGET_CPU}:" BUILD
@@ -256,10 +265,10 @@ pushd bazel_toolchain
       PREFIX=${CONDA_PREFIX}
       GCC_HEADER_VERSION=${BUILD_GCC_HEADER_VERSION:-}
       LD=${LD//${HOST}/${BUILD}}
-      CFLAGS="$(echo " " ${CFLAGS} | sed 's/ -mss[^ ]*//g' | sed 's/ -march=[^ ]*//g' | sed 's/ -mcpu=[^ ]*//g' |sed 's/ -mtune=[^ ]*//g')"
+      CFLAGS="$(echo " " ${CFLAGS} | sed 's/ -mss[^ ]*//g' | sed 's/ -march=[^ ]*//g' | sed 's/ -mcpu=[^ ]*//g' |sed 's/ -mtune=[^ ]*//g' | sed 's/ -mabi=[^ ]*//g')"
       CFLAGS=${CFLAGS//${HOST_PREFIX}/${CONDA_PREFIX}}
       CPPFLAGS=${CPPFLAGS//${HOST_PREFIX}/${CONDA_PREFIX}}
-      CXXFLAGS="$(echo " " ${CXXFLAGS} | sed 's/ -mss[^ ]*//g' | sed 's/ -march=[^ ]*//g' | sed 's/ -mcpu=[^ ]*//g' |sed 's/ -mtune=[^ ]*//g')"
+      CXXFLAGS="$(echo " " ${CXXFLAGS} | sed 's/ -mss[^ ]*//g' | sed 's/ -march=[^ ]*//g' | sed 's/ -mcpu=[^ ]*//g' |sed 's/ -mtune=[^ ]*//g' | sed 's/ -mabi=[^ ]*//g')"
       CXXFLAGS=${CXXFLAGS//${HOST_PREFIX}/${CONDA_PREFIX}}
       CONDA_BUILD_SYSROOT=${CONDA_BUILD_SYSROOT//${HOST}/${BUILD}}
       LDFLAGS=${LDFLAGS//${HOST_PREFIX}/${CONDA_PREFIX}}
